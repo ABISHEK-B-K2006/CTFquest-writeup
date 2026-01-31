@@ -1,0 +1,156 @@
+BOOT2ROOT WRITEUP BY ABI
+Challenge 1: Simplistic
+Category: Boot2Root / Privilege Escalation
+Overview
+The objective was to gain full root access on a Linux system that exposed no external network services. The challenge focused on boot-level misconfiguration rather than remote exploitation.
+
+Step 1 — Enumeration
+Network scanning revealed no open ports.
+This indicated the attack surface was local, not network-based.
+
+Step 2 — Exploitation
+The system allowed access to recovery mode without authentication.
+A root shell was obtained via recovery options.
+The filesystem was remounted as writable:
+mount -o remount,rw /
+Step 3 — Flag Retrieval
+cat /root/root.flag
+
+Flag:
+SECE{r00t_v14_su1d_f1nd}
+
+Conclusion:
+Unrestricted recovery mode access leads to instant root compromise.
+
+
+Challenge 2: CyberSync
+Category: Boot2Root / Privilege Escalation
+Overview
+This challenge simulated a system with no exposed services, requiring local access. The underlying lesson revolved around insecure automation design, particularly Python execution trust.
+
+Step 1 — Enumeration
+Network scan showed all ports filtered.
+Console access confirmed recovery mode was enabled.
+
+Step 2 — Exploitation
+Recovery mode was used to access a root shell.
+Filesystem remounted as writable:
+mount -o remount,rw /
+
+Step 3 — Discovery
+The root flag message indicated a Python library hijacking vulnerability.
+The challenge demonstrated how Python automation trusting local libraries can be dangerous, even though no active hijack was performed.
+
+Step 4 — Flag Retrieval
+cat /root/root.txt
+Flag:
+SECE{Pyth0n_L1b_H1j4ck_1s_P0w3rful!}
+
+Conclusion:
+Improper trust in Python execution environments can lead to library hijacking attacks.
+
+
+
+Challenge 3: Silent Trust
+
+Category: Boot2Root / Trust Exploitation
+
+Overview
+The system intentionally blocked SSH and console login, forcing analysis of implicit trust relationships in automation and CI artifacts.
+
+Step 1 — Enumeration
+SSH service existed but denied authentication.
+Cron jobs and systemd services appeared clean.
+User devops existed but was non-interactive.
+ 
+Step 2 — Discovery
+CI-related files were found under:
+/home/devops/.cache/.ci/
+A user flag confirmed exploitation direction.
+
+Step 3 — Root Access
+Boot analysis allowed inspection of trusted execution paths.
+Root implicitly trusted CI artifacts owned by a non-login user.
+
+Step 4 — Flags
+User Flag:
+SECE{trust_is_the_first_vulnerability}
+Root Flag:
+SECE{capabilities_are_stronger_than_passwords}
+
+Conclusion:
+Automation and CI/CD pipelines introduce silent trust paths that can be abused without direct user login.
+
+Challenge 4: Chain of Trust
+Category: Boot2Root / Trust Chaining
+
+Overview
+This challenge required chaining multiple small misconfigurations rather than exploiting a single vulnerability.
+
+Step 1 — Enumeration
+No network services were exposed.
+No sudo, SUID, or direct privilege escalation paths were available.
+
+Step 2 — Exploitation
+Trust assumptions across execution contexts were analyzed.
+Multiple weak trust boundaries were chained together to achieve root access.
+
+Step 3 — Flag Retrieval
+cat /root/flag.txt
+
+Flag:
+SECE{ch41n_th3_m1st4k3s_n0t_c0mm4nds}
+
+Conclusion:
+Real-world compromises often occur due to chained assumptions, not obvious vulnerabilities.
+
+Challenge 5: Shadow Backup
+
+Category: Boot2Root / Privilege Delegation
+
+Overview:
+The system simulated improper privilege delegation within backup mechanisms, leading to full root compromise.
+
+Step 1 — Enumeration
+Backup-related files were discovered under:
+/root/flag/
+Misconfigured sudo secure_path behavior was identified.
+
+Step 2 — Exploitation
+Trusted backup execution paths allowed access to privileged files.
+Root filesystem inspection revealed the final flag.
+
+Step 3 — Flag Retrieval
+cat /root/flag/root.txt
+
+Flag:
+SECE{sudo_secure_path_is_not_your_friend}
+
+
+Challenge 6: Tarpit
+Category: Boot2Root / Privilege Escalation
+Overview
+The objective was to gain full root access on a Linux system that exposed no external network services. The challenge focused on boot-level misconfiguration rather than remote exploitation.
+
+Step 1 — Enumeration
+Network scanning revealed no open ports.
+This indicated the attack surface was local, not network-based.
+
+Step 2 — Exploitation
+The system allowed access to recovery mode without authentication.
+A root shell was obtained via recovery options.
+The filesystem was remounted as writable:
+mount -o remount,rw /
+
+Step 3 — Flag Retrieval
+ls /root
+there is flag.txt
+cat flag.txt
+
+Flag:
+SECE{b2r_sudo_tar_pwned}
+
+Conclusion:
+Unrestricted recovery mode access leads to instant root compromise.
+
+
