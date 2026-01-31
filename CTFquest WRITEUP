@@ -126,31 +126,45 @@ cat /root/flag/root.txt
 Flag:
 SECE{sudo_secure_path_is_not_your_friend}
 
+6.Challenge 6:Tarpit
+Category:Boot2Root / Privilege Escalation
 
-Challenge 6: Tarpit
-Category: Boot2Root / Privilege Escalation
 Overview
-The objective was to gain full root access on a Linux system that exposed no external network services. The challenge focused on boot-level misconfiguration rather than remote exploitation.
+The objective of the Tarpit challenge was to gain root access on a Linux system with no exposed network services.
+Although the challenge name and flag hint toward a tar-based privilege escalation, the system contained a critical boot-level misconfiguration that allowed direct root access through recovery mode.
+This challenge highlights how boot misconfigurations completely bypass all user-level security controls, making traditional privilege escalation unnecessary.
 
 Step 1 — Enumeration
 Network scanning revealed no open ports.
-This indicated the attack surface was local, not network-based.
+No remote services were accessible.
+This confirmed that the attack surface was local, not network-based.
+Since external access was unavailable, attention was shifted to boot and system access mechanisms.
 
-Step 2 — Exploitation
-The system allowed access to recovery mode without authentication.
-A root shell was obtained via recovery options.
-The filesystem was remounted as writable:
+Step 2 — Exploitation (Boot-Level Misconfiguration)
+The system allowed unrestricted access to Advanced Boot Options.
+Actions Performed:
+Rebooted the system.
+Entered Advanced Options / Recovery Mode.
+Selected root shell without authentication.
+
+The recovery environment provided a root shell with no password protection.
+
+Step 3 — Remount Filesystem
+By default, the root filesystem was mounted as read-only.
+To modify and access system files, it was remounted as writable:
+
 mount -o remount,rw /
 
-Step 3 — Flag Retrieval
+This enabled full read/write access as root.
+Step 4 — Flag Retrieval
+Listing the root directory:
 ls /root
-there is flag.txt
-cat flag.txt
-
+The flag file was discovered.
+Reading the flag:
+cat /root/flag.txt
 Flag:
 SECE{b2r_sudo_tar_pwned}
 
-Conclusion:
-Unrestricted recovery mode access leads to instant root compromise.
-
-
+Conclusion
+This challenge demonstrates that boot-level security failures override all operating system protections.
+Even though the challenge theme suggests a tar-based privilege escalation, unrestricted recovery mode access allowed instant root compromise, making further exploitation redundant.
