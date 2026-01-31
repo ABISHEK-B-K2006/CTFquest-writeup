@@ -1,4 +1,17 @@
 BOOT2ROOT WRITEUP BY ABI
+
+" Global Exploitation Method i used (Applies to All Challenges)(using grub)
+  Exploitation Technique Used
+  All challenges in this Boot2Root series were solved by exploiting boot-level misconfigurations, specifically:
+  Accessed the GRUB menu during boot
+  Accessing Advanced Boot Options / Recovery Mode, or
+  Using the e key to edit boot parameters and gain a root shell( using "init=/bin/bash")
+  No remote services, network exploits, sudo abuse, or userland privilege escalation techniques were required. "
+
+
+
+
+
 Challenge 1: Simplistic
 Category: Boot2Root / Privilege Escalation
 Overview
